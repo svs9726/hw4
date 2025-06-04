@@ -5,11 +5,26 @@
   <h3><%= entry["title"] %></h3>
   <h4><%= entry["occurred_on"] %></h4>
   <p><%= entry["description"] %></p>
+  
+  <% # conditionally display image URL OR image upload %>
+    <%# if an image is uploaded #%>
+  <% if entry.uploaded_image.attached? %>
+  <%# show the uploaded image%>
+    <div>
+    <img src ="<%= url_for(entry.uploaded_image) %>" class="img-fluid" style="max-width: 300px; width: auto;">
+    </div>
+  <%# otherwise display original URL%>
+  <% else %>
+    <div>
+      <img src ="<%= entry["image_url"] %>" class="img-fluid" style="max-width: 300px; width: auto;">
+    </div>
+  <% end %>
+
 <% end %>
 
-<p>
-  <a href="/entries/new?place_id=<%= @place["id"] %>">New Entry</a>
-</p>
+<% if current_user %>
+  <%= link_to "New Entry", "/entries/new?place_id=#{@place["id"]}" %>
+<% end %>
 
 <p>
   <a href="/places">Back to All Places</a>
