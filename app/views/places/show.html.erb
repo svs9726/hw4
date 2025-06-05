@@ -1,31 +1,39 @@
 <h1><%= @place["name"] %></h1>
 
 <h2>My Entries</h2>
-<% for entry in @entries %>
-  <h3><%= entry["title"] %></h3>
-  <h4><%= entry["occurred_on"] %></h4>
-  <p><%= entry["description"] %></p>
+<div class="row">
+  <% for entry in @entries %>
+  <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h3 class="card-title"><%= entry["title"] %></h3>
+          <h6 class="card-subtitle mb-2 text-muted"><%= entry["occurred_on"] %></h4>
+          <p class="card-text"><%= entry["description"] %></p>
+        </div>
   
   <% # conditionally display image URL OR image upload %>
     <%# if an image is uploaded #%>
   <% if entry.uploaded_image.attached? %>
   <%# show the uploaded image%>
-    <div>
-    <img src ="<%= url_for(entry.uploaded_image) %>" class="img-fluid" style="max-width: 300px; width: auto;">
-    </div>
+    <img src ="<%= url_for(entry.uploaded_image) %>" class="card-img-bottom img-fluid" style="max-height: 200px; object-fit: cover;">
   <%# otherwise display original URL%>
   <% else %>
-    <div>
-      <img src ="<%= entry["image_url"] %>" class="img-fluid" style="max-width: 300px; width: auto;">
-    </div>
+    <img src ="<%= entry["image_url"] %>" class="card-img-bottom img-fluid" style="max-height: 200px; object-fit: cover;">
   <% end %>
-
+</div>
+</div>
 <% end %>
+</div>
+
 
 <% if current_user %>
-  <%= link_to "New Entry", "/entries/new?place_id=#{@place["id"]}" %>
+  <div class="d-flex gap-2 mb-4">
+    <%= link_to "New Entry", "/entries/new?place_id=#{@place['id']}", class: "btn btn-primary" %>
+    <%= link_to "Back to All Places", "/places", class:"btn btn-secondary" %>
+  </div>
+<% else %>
+  <div class="mb-4">
+  <%= link_to "Back to All Places", "/places", class:"btn btn-secondary" %>
+  </div>
 <% end %>
 
-<p>
-  <a href="/places">Back to All Places</a>
-</p>

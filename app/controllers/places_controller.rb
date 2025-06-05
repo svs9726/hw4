@@ -1,4 +1,5 @@
 class PlacesController < ApplicationController
+before_action :require_login, except: [:public_homepage]
 
   def index
     @places = Place.all
@@ -6,7 +7,7 @@ class PlacesController < ApplicationController
 
   def show
     @place = Place.find_by({ "id" => params["id"] })
-    if current user
+    if current_user
       @entries = Entry.where({ "place_id" => @place["id"], "user_id" => session["user_id"] })
     else
       @entries = [] 
